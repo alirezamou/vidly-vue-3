@@ -33,6 +33,7 @@ export default {
         },
         searchTerm() {
             this.search();
+            this.$emit("searchTerm", this.searchTerm);
         }
     }
 }
