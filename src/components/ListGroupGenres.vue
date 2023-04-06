@@ -2,7 +2,14 @@
     <ul class="list-group">
         <li
           class="list-group-item"
-          v-for="(genre, index) in newGenres"
+          :class="{ active: selectedGenre.name === 'All'}"
+          @click="changeGenre({ name: 'All' })"
+        >
+        All
+        </li>
+        <li
+          class="list-group-item"
+          v-for="(genre, index) in genres"
           :key="index"
           :class="{ active: selectedGenre.name === genre.name }"
           @click="changeGenre(genre)"
@@ -13,7 +20,6 @@
 </template>
 
 <script>
-import { toRaw } from 'vue';
 export default {
     name: "ListGroupGenres",
     props: {
@@ -33,13 +39,6 @@ export default {
             if(genre.name === this.selectedGenre.name) return;
 
             this.$emit("changeGenre", genre);
-        }
-    },
-    computed: {
-        newGenres() {
-            const temp = toRaw(this.genres)
-            temp.unshift({ name: "All" });
-            return temp;
         }
     },
     watch: {
