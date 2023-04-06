@@ -68,7 +68,7 @@ export default {
             if(this.searchTerm) {
                 return this.sortedMovies;
             } else {
-                if(this.selectedGenre.name && this.selectedGenre.name !== "All") {
+                if(this.selectedGenre._id) {
                     return this.sortedMovies.filter(movie => movie.genre.name === this.selectedGenre.name);
                 } else {
                     return this.sortedMovies;
