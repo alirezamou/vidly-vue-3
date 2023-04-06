@@ -60,8 +60,12 @@ export default {
                 return;
             }
             const sortedMovies = orderBy(this.movies, this.sortBy, this.sortOrder);
-            console.log(sortedMovies);
             this.$emit("sortedMovies", sortedMovies);
+        }
+    },
+    watch: {
+        movies() {
+            this.sort_movies();
         }
     }
 }
