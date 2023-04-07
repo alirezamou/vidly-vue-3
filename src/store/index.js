@@ -3,7 +3,10 @@ import { getMovies } from "../library/moviesServices";
 import { getGenres } from "../library/genreServices";
 
 import { FirebaseAuth } from "../library/firebase";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import {
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+} from "firebase/auth";
 
 const store = createStore({
   state: {
@@ -37,6 +40,20 @@ const store = createStore({
         commit("SET_USER", response.user);
       } else {
         throw new Error("Unable to login");
+      }
+    },
+
+    async register({ commit }, { username, email, password }) {
+      const response = await createUserWithEmailAndPassword(
+        FirebaseAuth,
+        email,
+        password
+      );
+      if (response) {
+        const user = { username, ...response.user };
+        commit("SET_USER", user);
+      } else {
+        throw new Error("Unable to register user");
       }
     },
   },
