@@ -2,10 +2,17 @@ import { createStore } from "vuex";
 import { getMovies } from "../library/moviesServices";
 import { getGenres } from "../library/genreServices";
 
+import { FirebaseAuth } from "../library/firebase";
+import { signInWithEmailAndPassword } from "firebase/auth";
+
 const store = createStore({
   state: {
     movies: [],
     genres: [],
+    user: {
+      loggedIn: false,
+      data: null,
+    },
   },
   mutations: {
     SET_MOVIES(state, movies) {
@@ -13,6 +20,24 @@ const store = createStore({
     },
     SET_GENRES(state, genres) {
       state.genres = genres;
+    },
+    SET_USER(state, user) {
+      state.user.data = user;
+    },
+  },
+  actions: {
+    async login({ commit }, { email, password }) {
+      const response = await signInWithEmailAndPassword(
+        FirebaseAuth,
+        email,
+        password
+      );
+
+      if (response) {
+        commit("SET_USER", response.user);
+      } else {
+        throw new Error("Unable to login");
+      }
     },
   },
   plugins: [
