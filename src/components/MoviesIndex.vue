@@ -1,6 +1,6 @@
 <template>
 
-    <div class="row">
+    <div class="row container-md mt-2" style="min-width: 768px;">
         <div class="col-3">
             <ListGroupGenres :selectedGenre="selectedGenre" @changeGenre="change_genre" />
         </div>
