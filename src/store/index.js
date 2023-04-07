@@ -1,6 +1,7 @@
 import { createStore } from "vuex";
 import { getMovies } from "../library/moviesServices";
 import { getGenres } from "../library/genreServices";
+import { addRegisteredUser } from "../library/userServices";
 
 import { FirebaseAuth } from "../library/firebase";
 import {
@@ -51,8 +52,20 @@ const store = createStore({
         password
       );
       if (response) {
-        const user = { username, ...response.user };
+        const user = {
+          username,
+          uid: response.user.uid,
+          email: response.user.email,
+        };
+
         commit("SET_USER", user);
+
+        try {
+          await addRegisteredUser(user);
+        } catch (error) {
+          // TODO: implement a way besides the console log the error.
+          console.log(error.message);
+        }
       } else {
         throw new Error("Unable to register user");
       }
