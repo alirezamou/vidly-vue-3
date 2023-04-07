@@ -1,7 +1,7 @@
 import { createStore } from "vuex";
 import { getMovies } from "../library/moviesServices";
 import { getGenres } from "../library/genreServices";
-import { addRegisteredUser } from "../library/userServices";
+import { addRegisteredUser, getUser } from "../library/userServices";
 
 import { FirebaseAuth } from "../library/firebase";
 import {
@@ -29,6 +29,9 @@ const store = createStore({
       state.user.data = user;
       state.user.loggedIn = true;
     },
+    SET_USERNAME(state, username) {
+      state.user.data.username = username;
+    },
   },
   actions: {
     async login({ commit }, { email, password }) {
@@ -39,7 +42,21 @@ const store = createStore({
       );
 
       if (response) {
-        commit("SET_USER", response.user);
+        const user = {
+          uid: response.user.uid,
+          email: response.user.email,
+          username: null,
+        };
+
+        commit("SET_USER", user);
+
+        try {
+          const { username } = await getUser(response.user.uid);
+          commit("SET_USERNAME", username);
+        } catch (error) {
+          // TODO: implement a way to handle the username being null instead of console log the error
+          console.log(error);
+        }
       } else {
         throw new Error("Unable to login");
       }
