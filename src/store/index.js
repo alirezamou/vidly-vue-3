@@ -26,6 +26,7 @@ const store = createStore({
     },
     SET_USER(state, user) {
       state.user.data = user;
+      state.user.loggedIn = true;
     },
   },
   actions: {
