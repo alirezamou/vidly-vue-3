@@ -20,8 +20,8 @@
                 <ErrorMessage name="usernameInput" class="form-text text-danger" />
             </div>
 
-            <div class="form-group mb-2">
-                <label for="emailInput" class="form-label"></label>
+            <div class="form-group mb-4">
+                <label for="emailInput" class="form-label">Email</label>
                 <Field
                   id="emailInput"
                   name="emailInput"
@@ -34,8 +34,8 @@
                 <ErrorMessage name="emailInput" class="form-text text-danger" />
             </div>
 
-            <div class="form-group mb-2">
-                <label for="passwordInput" class="form-label"></label>
+            <div class="form-group mb-4">
+                <label for="passwordInput" class="form-label">Password</label>
                 <Field
                   id="passwordInput"
                   name="passwordInput"
@@ -48,7 +48,7 @@
                 <ErrorMessage name="passwordInput" class="form-text text-danger" />
             </div>
 
-            <div class="form-group">
+            <div class="form-group mb-0">
                 <div class="col-sm-3 col-md-4 offset-md-8">
                     <button type="submit" class="btn btn-primary w-100">Register</button>
                 </div>
