@@ -1,5 +1,5 @@
 <template>
-    <div class="container-md mt-4 col-md-6">
+    <div class="container-md mt-4 col-md-6" style="min-width: 576px;">
         <h2 class="h2 text-muted mb-2 mt-2">Login</h2>
         <div v-if="error" class="alert alert-danger mb-2">{{ error }}</div>
 
