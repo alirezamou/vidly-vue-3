@@ -1,5 +1,5 @@
 import { createStore } from "vuex";
-import { getMovies } from "../library/moviesServices";
+import { getMovies, addMovie } from "../library/moviesServices";
 import { getGenres } from "../library/genreServices";
 import { addRegisteredUser, getUser } from "../library/userServices";
 
@@ -39,6 +39,30 @@ const store = createStore({
     },
   },
   actions: {
+    async addMovie({ dispatch }, movie) {
+      try {
+        await addMovie(movie);
+        await dispatch("getMovies");
+      } catch (error) {
+        throw error;
+      }
+    },
+    async getMovies({ commit }) {
+      try {
+        const movies = await getMovies();
+        commit("SET_MOVIES", movies);
+      } catch (error) {
+        throw error;
+      }
+    },
+    async getGenres({ commit }) {
+      try {
+        const genres = await getGenres();
+        commit("SET_GENRES", genres);
+      } catch (error) {
+        throw error;
+      }
+    },
     async login({ commit }, { email, password }) {
       const response = await signInWithEmailAndPassword(
         FirebaseAuth,
@@ -105,19 +129,9 @@ const store = createStore({
   },
   plugins: [
     async (store) => {
-      try {
-        const movies = await getMovies();
-        store.commit("SET_MOVIES", movies);
-      } catch (error) {
-        console.log(error.message);
-      }
+      await store.dispatch("getMovies");
 
-      try {
-        const genres = await getGenres();
-        store.commit("SET_GENRES", genres);
-      } catch (error) {
-        console.log(error.message);
-      }
+      await store.dispatch("getGenres");
     },
   ],
 });
