@@ -72,7 +72,10 @@
             </div>
         </div>
         <div class="modal-footer">
-            <button @click="handleSubmit" type="button" class="btn btn-primary">Save</button>
+            <button @click="handleSubmit" type="button" class="btn btn-primary">
+                <span v-if="!loading">Save</span>
+                <loading v-if="loading" />
+            </button>
             <button @click="cancelAdd" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
         </div>
         </div>
@@ -83,6 +86,7 @@
 
 <script>
 import { Form, Field, ErrorMessage } from "vee-validate";
+import LoadingOverlay from "@/components/LoadingOverlay.vue";
 
 export default {
     name: "AddMovie",
@@ -90,6 +94,7 @@ export default {
         VForm: Form,
         VField: Field,
         ErrorMessage,
+        loading: LoadingOverlay,
     },
     data() {
         return {
@@ -98,6 +103,7 @@ export default {
             numberInStock: "",
             dailyRentalRate: "",
             error: null,
+            loading: false,
         };
     },
     computed: {
@@ -107,6 +113,8 @@ export default {
     },
     methods: {
         async handleSubmit() {
+            this.loading = true;
+
             const genre = this.genres.find(g => g._id === this.genreId);
 
             const movie = {
@@ -118,6 +126,7 @@ export default {
 
             try {
                 await this.$store.dispatch("addMovie", movie);
+                this.loading = false;
                 this.$router.push("/movies");
             } catch(error) {
                 this.error = error.message;
