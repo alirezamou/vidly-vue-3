@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="position-relative vh-100">
         <div class="d-flex justify-content-evenly">
 
             <div class="row container-md mt-2" style="min-width: 768px;">
