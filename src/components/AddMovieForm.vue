@@ -9,6 +9,7 @@
             </div>
         <div class="modal-body">
             <div class="container">
+                <div v-if="error" class="alert alert-danger">{{ error }}</div>
                 <VForm @submit="handleSubmit">
                     <div class="form-group mb-4">
                         <label for="movieTitle" class="form-label text-muted">Title</label>
@@ -32,7 +33,7 @@
                         class="form-select"
                         id="movieGenre"
                         aria-label="Genre"
-                        v-model="genre"
+                        v-model="genreId"
                         :rules="(value) => value ? true : 'select a genre'"
                         >
                             <option selected="" value="" disabled>Select genre</option>
@@ -93,9 +94,10 @@ export default {
     data() {
         return {
             title: "",
-            genre: "",
+            genreId: "",
             numberInStock: "",
             dailyRentalRate: "",
+            error: null,
         };
     },
     computed: {
@@ -105,21 +107,23 @@ export default {
     },
     methods: {
         async handleSubmit() {
+            const genre = this.genres.find(g => g._id === this.genreId);
+
             const movie = {
                 title: this.title,
-                genre: this.genre,
+                genre: genre,
                 numberInStock: this.numberInStock,
                 dailyRentalRate: this.dailyRentalRate,
             }
 
             try {
                 await this.$store.dispatch("addMovie", movie);
+                this.$router.push("/movies");
             } catch(error) {
-                console.log(error);
+                this.error = error.message;
             }
         },
         cancelAdd() {
-            console.log("clicked");
             this.$router.push("/movies");
         },
         validateNumberInStockField(value) {
