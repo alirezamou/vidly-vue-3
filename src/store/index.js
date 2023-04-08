@@ -7,6 +7,7 @@ import { FirebaseAuth } from "../library/firebase";
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
+  signOut,
 } from "firebase/auth";
 
 const store = createStore({
@@ -31,6 +32,10 @@ const store = createStore({
     },
     SET_USERNAME(state, username) {
       state.user.data.username = username;
+    },
+    LOGOUT(state) {
+      state.user.data = null;
+      state.user.loggedIn = false;
     },
   },
   actions: {
@@ -85,6 +90,16 @@ const store = createStore({
         }
       } else {
         throw new Error("Unable to register user");
+      }
+    },
+
+    async logout({ commit }) {
+      try {
+        await signOut(FirebaseAuth);
+
+        commit("LOGOUT");
+      } catch (error) {
+        throw error;
       }
     },
   },
