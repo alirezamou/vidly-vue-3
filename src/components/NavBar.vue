@@ -13,11 +13,14 @@
           <li class="nav-item">
             <router-link to="/rentals" class="nav-link">Rentals</router-link>
           </li>
-          <li class="nav-item">
+          <li v-if="!isUserLoggedIn" class="nav-item">
             <router-link to="/login" class="nav-link">Login</router-link>
           </li>
-          <li class="nav-item">
+          <li v-if="!isUserLoggedIn" class="nav-item">
             <router-link to="/register" class="nav-link">Register</router-link>
+          </li>
+          <li v-if="isUserLoggedIn" class="nav-item">
+            <router-link to="/logout" class="nav-link">Logout</router-link>
           </li>
         </ul>
       </div>
@@ -28,5 +31,10 @@
 <script>
 export default {
     name: "NavbarComponent",
+    computed: {
+        isUserLoggedIn() {
+            return this.$store.state.user.loggedIn;
+        }
+    }
 }
 </script>
