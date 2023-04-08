@@ -1,35 +1,42 @@
 <template>
+    <div class="d-flex justify-content-evenly">
 
-    <div class="row container-md mt-2" style="min-width: 768px;">
-        <div class="col-3">
-            <ListGroupGenres :selectedGenre="selectedGenre" @changeGenre="change_genre" />
+        <div class="row container-md mt-2" style="min-width: 768px;">
+            <div class="col-3">
+                <ListGroupGenres :selectedGenre="selectedGenre" @changeGenre="change_genre" />
+            </div>
+            <div class="col-9">
+                <search
+                :movies="movies"
+                @filteredMovies="filter_movies"
+                @searchTerm="(value) => searchTerm = value"
+                />
+        
+                <table v-if="movies.length" class="table">
+                    <sorted :movies="filteredMovies" @sortedMovies="sort_movies"/>
+        
+                    <paginated :items="paginatedMovies" :per_page="per_page" :current_page="current_page"/>
+                </table>
+        
+                <ul class="pagination">
+                    <li v-for="i in totalPages" :key="i" class="page-item">
+                        <a
+                        @click="current_page = i"
+                        class="page-link"
+                        :class="{ active: current_page === i}"
+                        v-text="i + 1"
+                        ></a>
+                    </li>
+                </ul>
+        
+                <p v-if="!movies.length">no movies to show</p>
+            </div>
         </div>
-        <div class="col-9">
-            <search
-              :movies="movies"
-              @filteredMovies="filter_movies"
-              @searchTerm="(value) => searchTerm = value"
-            />
-    
-            <table v-if="movies.length" class="table">
-                <sorted :movies="filteredMovies" @sortedMovies="sort_movies"/>
-    
-                <paginated :items="paginatedMovies" :per_page="per_page" :current_page="current_page"/>
-            </table>
-    
-            <ul class="pagination">
-                <li v-for="i in totalPages" :key="i" class="page-item">
-                    <a
-                    @click="current_page = i"
-                    class="page-link"
-                    :class="{ active: current_page === i}"
-                    v-text="i + 1"
-                    ></a>
-                </li>
-            </ul>
-    
-            <p v-if="!movies.length">no movies to show</p>
-        </div>
+
+        <a @click="addMovie" class="btn btn-primary align-self-start text-nowrap">
+            <fa-icon icon="fa-solid fa-plus"></fa-icon>
+            Add Movie
+        </a>
     </div>
 
 </template>
