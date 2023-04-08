@@ -1,5 +1,11 @@
 import { FirebaseStore } from "./firebase";
-import { collection, getDocs, getDoc, doc } from "firebase/firestore/lite";
+import {
+  collection,
+  getDocs,
+  getDoc,
+  doc,
+  addDoc,
+} from "firebase/firestore/lite";
 
 export const moviesCollectionRef = collection(FirebaseStore, "movies");
 
@@ -23,5 +29,12 @@ export async function getMovie(id) {
     return movieDoc.data();
   } else {
     throw new Error(`Error occured with fetching the movie with id: ${id}`);
+  }
+}
+
+export async function addMovie(movie) {
+  const docRef = await addDoc(moviesCollectionRef, movie);
+  if (!docRef) {
+    throw new Error("Error occured while adding movie");
   }
 }
