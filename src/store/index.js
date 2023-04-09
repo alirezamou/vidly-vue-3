@@ -1,6 +1,6 @@
 import { createStore } from "vuex";
 import { getMovies, addMovie } from "../library/moviesServices";
-import { getGenres } from "../library/genreServices";
+import { getGenres, addGenre } from "../library/genreServices";
 import { addRegisteredUser, getUser } from "../library/userServices";
 
 import { FirebaseAuth } from "../library/firebase";
@@ -37,8 +37,19 @@ const store = createStore({
       state.user.data = null;
       state.user.loggedIn = false;
     },
+    ADD_GENRE(state, newGenre) {
+      state.genres.push(newGenre);
+    },
   },
   actions: {
+    async addGenre({ commit }, genreName) {
+      try {
+        const newGenre = await addGenre(genreName);
+        commit("ADD_GENRE", newGenre);
+      } catch (error) {
+        throw error;
+      }
+    },
     async addMovie({ dispatch }, movie) {
       try {
         await addMovie(movie);
