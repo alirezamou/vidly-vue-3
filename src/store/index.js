@@ -37,6 +37,9 @@ const store = createStore({
       state.user.data = null;
       state.user.loggedIn = false;
     },
+    ADD_MOVIE(state, movie) {
+      state.movies.push(movie);
+    },
     ADD_GENRE(state, newGenre) {
       state.genres.push(newGenre);
     },
@@ -50,10 +53,10 @@ const store = createStore({
         throw error;
       }
     },
-    async addMovie({ dispatch }, movie) {
+    async addMovie({ commit }, movie) {
       try {
         await addMovie(movie);
-        await dispatch("getMovies");
+        commit("ADD_MOVIE", movie);
       } catch (error) {
         throw error;
       }
