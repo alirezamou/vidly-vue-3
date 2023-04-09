@@ -4,7 +4,7 @@ import {
   getDocs,
   getDoc,
   doc,
-  addDoc,
+  setDoc,
 } from "firebase/firestore/lite";
 
 export const moviesCollectionRef = collection(FirebaseStore, "movies");
@@ -33,8 +33,15 @@ export async function getMovie(id) {
 }
 
 export async function addMovie(movie) {
-  const docRef = await addDoc(moviesCollectionRef, movie);
-  if (!docRef) {
-    throw new Error("Error occured while adding movie");
+  const docRef = doc(moviesCollectionRef);
+
+  Object.defineProperty(movie, "_id", {
+    value: docRef,
+  });
+
+  try {
+    await setDoc(docRef, movie);
+  } catch (error) {
+    throw error;
   }
 }
