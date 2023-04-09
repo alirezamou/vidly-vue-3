@@ -17,11 +17,19 @@
         {{ genre.name }}
         </li>
     </ul>
+
+    <router-link to="/movies/add-genre" class="btn btn-secondary align-self-start text-nowrap float-end mt-3">
+        <fa-icon icon="fa-solid fa-plus"></fa-icon>
+        Add Genre
+    </router-link>
+
+    <router-view />
 </template>
 
 <script>
 export default {
     name: "ListGroupGenres",
+    emits: ['changeGenre'],
     props: {
         selectedGenre: {
             type: Object,
