@@ -68,15 +68,17 @@
                         <ErrorMessage name="dailyRentalRate" class="form-text text-danger" />
                     </div>
 
+                    <hr />
+                    
+                    <div class="d-flex justify-content-end gap">
+                        <button type="submit" class="btn btn-primary me-2">
+                            <span v-if="!loading">Save</span>
+                            <loading v-if="loading" />
+                        </button>
+                        <button @click="cancelAdd" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    </div>
                 </VForm>
             </div>
-        </div>
-        <div class="modal-footer">
-            <button @click="handleSubmit" type="button" class="btn btn-primary">
-                <span v-if="!loading">Save</span>
-                <loading v-if="loading" />
-            </button>
-            <button @click="cancelAdd" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
         </div>
         </div>
     </div>
