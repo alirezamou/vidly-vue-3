@@ -45,3 +45,15 @@ export async function addMovie(movie) {
     throw error;
   }
 }
+
+export async function updateMovie(movie) {
+  if (movie._id) {
+    const docRef = doc(moviesCollectionRef, movie._id);
+
+    try {
+      await setDoc(docRef, movie);
+    } catch (error) {
+      throw error;
+    }
+  }
+}
