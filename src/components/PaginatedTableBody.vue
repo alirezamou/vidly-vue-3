@@ -2,7 +2,9 @@
     <tbody>
         <template v-for="(item, idx) in paginatedItems" :key="idx">
             <tr>
-                <td>{{ item.title }}</td>
+                <td>
+                  <router-link class="movie-link" :to="'/movies/movie/' + item._id">{{ item.title }}</router-link>
+                </td>
                 <td>{{ item.genre.name }}</td>
                 <td>{{ item.numberInStock }}</td>
                 <td>{{ item.dailyRentalRate }}</td>
@@ -43,3 +45,14 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+
+.movie-link {
+    text-decoration: none;
+    color: rgba(50, 50, 200, 0.8);
+}
+.movie-link:hover {
+    color: rgba(50, 50, 255, 1);
+}
+</style>

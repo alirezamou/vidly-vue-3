@@ -1,12 +1,13 @@
 import { createStore } from "vuex";
-import { getMovies } from "../library/moviesServices";
-import { getGenres } from "../library/genreServices";
+import { getMovies, addMovie, updateMovie } from "../library/moviesServices";
+import { getGenres, addGenre } from "../library/genreServices";
 import { addRegisteredUser, getUser } from "../library/userServices";
 
 import { FirebaseAuth } from "../library/firebase";
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
+  signOut,
 } from "firebase/auth";
 
 const store = createStore({
@@ -16,6 +17,11 @@ const store = createStore({
     user: {
       loggedIn: false,
       data: null,
+    },
+  },
+  getters: {
+    getMovie: (state) => (id) => {
+      return state.movies.find((movie) => movie._id === id);
     },
   },
   mutations: {
@@ -32,8 +38,62 @@ const store = createStore({
     SET_USERNAME(state, username) {
       state.user.data.username = username;
     },
+    LOGOUT(state) {
+      state.user.data = null;
+      state.user.loggedIn = false;
+    },
+    ADD_MOVIE(state, movie) {
+      state.movies.push(movie);
+    },
+    ADD_GENRE(state, newGenre) {
+      state.genres.push(newGenre);
+    },
+    UPDATE_MOVIE(state, movie) {
+      const movieIndex = state.movies.findIndex((m) => m._id === movie._id);
+      state.movies[movieIndex] = movie;
+    },
   },
   actions: {
+    async addGenre({ commit }, genreName) {
+      try {
+        const newGenre = await addGenre(genreName);
+        commit("ADD_GENRE", newGenre);
+      } catch (error) {
+        throw error;
+      }
+    },
+    async addMovie({ commit }, movie) {
+      try {
+        await addMovie(movie);
+        commit("ADD_MOVIE", movie);
+      } catch (error) {
+        throw error;
+      }
+    },
+    async updateMovie({ commit }, movie) {
+      try {
+        await updateMovie(movie);
+        commit("UPDATE_MOVIE", movie);
+      } catch (error) {
+        throw error;
+      }
+    },
+    async getMovies({ commit }) {
+      try {
+        const movies = await getMovies();
+        commit("SET_MOVIES", movies);
+      } catch (error) {
+        throw error;
+      }
+    },
+    async getGenres({ commit }) {
+      try {
+        const genres = await getGenres();
+        commit("SET_GENRES", genres);
+      } catch (error) {
+        throw error;
+      }
+    },
     async login({ commit }, { email, password }) {
       const response = await signInWithEmailAndPassword(
         FirebaseAuth,
@@ -87,22 +147,22 @@ const store = createStore({
         throw new Error("Unable to register user");
       }
     },
+
+    async logout({ commit }) {
+      try {
+        await signOut(FirebaseAuth);
+
+        commit("LOGOUT");
+      } catch (error) {
+        throw error;
+      }
+    },
   },
   plugins: [
     async (store) => {
-      try {
-        const movies = await getMovies();
-        store.commit("SET_MOVIES", movies);
-      } catch (error) {
-        console.log(error.message);
-      }
+      await store.dispatch("getMovies");
 
-      try {
-        const genres = await getGenres();
-        store.commit("SET_GENRES", genres);
-      } catch (error) {
-        console.log(error.message);
-      }
+      await store.dispatch("getGenres");
     },
   ],
 });
