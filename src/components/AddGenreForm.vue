@@ -21,7 +21,7 @@
                                     placeholder="Genre Name"
                                     autofocus
                                     autocomplete="off"
-                                    :rules="(value) => value ? true : 'Name is required'"
+                                    :rules="(value) => value.trim() ? true : 'Name is required'"
                                     />
                                     <ErrorMessage name="genreName" class="form-text text-danger" />
                                 </div>
@@ -72,7 +72,7 @@ export default {
         async handleSubmit() {
             try {
                 this.loading = true;
-                await this.$store.dispatch("addGenre", this.genreName);
+                await this.$store.dispatch("addGenre", this.genreName.trim());
                 this.loading = false;
                 this.$router.push("/movies");
             } catch(error) {
