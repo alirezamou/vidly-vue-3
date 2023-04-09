@@ -5,6 +5,7 @@ import Login from "@/components/Login.vue";
 import Register from "@/components/Register.vue";
 import Logout from "@/components/Logout.vue";
 import AddMovieForm from "@/components/AddMovieForm.vue";
+import AddGenreForm from "@/components/AddGenreForm.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -22,6 +23,10 @@ const router = createRouter({
         {
           path: "add",
           component: AddMovieForm,
+        },
+        {
+          path: "add-genre",
+          component: AddGenreForm,
         },
       ],
     },
