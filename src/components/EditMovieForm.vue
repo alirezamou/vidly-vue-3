@@ -19,6 +19,7 @@
                                 type="text"
                                 class="form-control"
                                 v-model="title"
+                                auocomplete="off"
                                 placeholder="Movie Title"
                                 autofocus
                                 :rules="(value) => value.trim() ? true : 'Title is required'"
@@ -50,6 +51,7 @@
                                 type="text"
                                 class="form-control"
                                 v-model="numberInStock"
+                                autocomplete="off"
                                 placeholder="Number in stock"
                                 :rules="validateNumberInStockField"
                                 />
@@ -63,6 +65,7 @@
                                 type="text"
                                 class="form-control"
                                 v-model="dailyRentalRate"
+                                autocomplete="off"
                                 placeholder="Daily rental rate"
                                 :rules="validateDailyRentalRateField"
                                 />
@@ -91,8 +94,6 @@
 <script>
 import { Form, Field, ErrorMessage } from "vee-validate";
 import LoadingOverlay from "@/components/LoadingOverlay.vue";
-
-import { updateMovie } from "@/library/moviesServices";
 
 export default {
     name: "EditMovie",
@@ -163,7 +164,7 @@ export default {
                 return "This field is required";
             }
 
-            if(isNaN(value)) {
+            if(isNaN(value) || (parseFloat(value) < 0) || (parseFloat(value) % 1 !== 0)) {
                 return "Please enter a valid number";
             }
 
@@ -174,7 +175,7 @@ export default {
                 return "This field is required";
             }
 
-            if(isNaN(value)) {
+            if(isNaN(value) || parseFloat(value) < 0) {
                 return "Please enter a valid number";
             }
 

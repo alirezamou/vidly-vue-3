@@ -124,8 +124,8 @@ export default {
             const movie = {
                 title: this.title.trim(),
                 genre: genre,
-                numberInStock: this.numberInStock,
-                dailyRentalRate: this.dailyRentalRate,
+                numberInStock: parseInt(this.numberInStock),
+                dailyRentalRate: parseFloat(this.dailyRentalRate),
             }
 
             try {
@@ -144,7 +144,7 @@ export default {
                 return "This field is required";
             }
 
-            if(isNaN(value)) {
+            if(isNaN(value) || (parseFloat(value) < 0) || (parseFloat(value) % 1 !== 0)) {
                 return "Please enter a valid number";
             }
 
@@ -155,7 +155,7 @@ export default {
                 return "This field is required";
             }
 
-            if(isNaN(value)) {
+            if(isNaN(value) || (parseFloat(value) < 0)) {
                 return "Please enter a valid number";
             }
 
