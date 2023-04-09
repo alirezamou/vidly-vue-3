@@ -21,7 +21,7 @@
                                 v-model="title"
                                 placeholder="Movie Title"
                                 autofocus
-                                :rules="(value) => value ? true : 'Title is required'"
+                                :rules="(value) => value.trim() ? true : 'Title is required'"
                                 />
                                 <ErrorMessage name="movieTitle" class="form-text text-danger" />
                             </div>
@@ -122,7 +122,7 @@ export default {
             const genre = this.genres.find(g => g._id === this.genreId);
 
             const movie = {
-                title: this.title,
+                title: this.title.trim(),
                 genre: genre,
                 numberInStock: this.numberInStock,
                 dailyRentalRate: this.dailyRentalRate,
