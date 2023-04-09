@@ -1,5 +1,5 @@
 import { createStore } from "vuex";
-import { getMovies, addMovie } from "../library/moviesServices";
+import { getMovies, addMovie, updateMovie } from "../library/moviesServices";
 import { getGenres, addGenre } from "../library/genreServices";
 import { addRegisteredUser, getUser } from "../library/userServices";
 
@@ -48,6 +48,10 @@ const store = createStore({
     ADD_GENRE(state, newGenre) {
       state.genres.push(newGenre);
     },
+    UPDATE_MOVIE(state, movie) {
+      const movieIndex = state.movies.findIndex((m) => m._id === movie._id);
+      state.movies[movieIndex] = movie;
+    },
   },
   actions: {
     async addGenre({ commit }, genreName) {
@@ -62,6 +66,14 @@ const store = createStore({
       try {
         await addMovie(movie);
         commit("ADD_MOVIE", movie);
+      } catch (error) {
+        throw error;
+      }
+    },
+    async updateMovie({ commit }, movie) {
+      try {
+        await updateMovie(movie);
+        commit("UPDATE_MOVIE", movie);
       } catch (error) {
         throw error;
       }
