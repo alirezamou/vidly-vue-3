@@ -19,6 +19,11 @@ const store = createStore({
       data: null,
     },
   },
+  getters: {
+    getMovie: (state) => (id) => {
+      return state.movies.find((movie) => movie._id === id);
+    },
+  },
   mutations: {
     SET_MOVIES(state, movies) {
       state.movies = movies;
