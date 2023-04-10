@@ -10,9 +10,10 @@ import {
   faChevronUp,
   faChevronDown,
   faPlus,
+  faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 
-library.add(faChevronDown, faChevronUp, faPlus);
+library.add(faChevronDown, faChevronUp, faPlus, faTrash);
 
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap";

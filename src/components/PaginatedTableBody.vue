@@ -8,14 +8,30 @@
                 <td>{{ item.genre.name }}</td>
                 <td>{{ item.numberInStock }}</td>
                 <td>{{ item.dailyRentalRate }}</td>
+                <td>
+                    <button v-if="!loading" class="btn text-secondary" id="delete-movie-button" @click="deleteMovie(item)">
+                        <fa-icon icon="fa-solid fa-trash"></fa-icon>
+                    </button>
+                    <loading v-if="loading" />
+                </td>
             </tr>
         </template>
     </tbody>
 </template>
 
 <script>
+import LoadingOverlay from "@/components/LoadingOverlay.vue";
+
 export default {
     name: "Paginated",
+    components: {
+        loading: LoadingOverlay
+    },
+    data() {
+        return {
+            loading: false,
+        };
+    },
     props: {
         items: {
             type: Array,
@@ -54,5 +70,8 @@ export default {
 }
 .movie-link:hover {
     color: rgba(50, 50, 255, 1);
+}
+#delete-movie-button:hover {
+    color: red !important;
 }
 </style>

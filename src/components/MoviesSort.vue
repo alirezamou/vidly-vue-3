@@ -21,6 +21,7 @@
                 <fa-icon v-if="sortBy === 'dailyRentalRate' && sortOrder === 'asc'" icon="fa-solid fa-chevron-up" />
                 <fa-icon v-if="sortBy === 'dailyRentalRate' && sortOrder === 'desc'" icon="fa-solid fa-chevron-down" />
             </a></th>
+            <th></th>
         </tr>
     </thead>
 </template>
