@@ -1,5 +1,10 @@
 import { createStore } from "vuex";
-import { getMovies, addMovie, updateMovie } from "../library/moviesServices";
+import {
+  getMovies,
+  addMovie,
+  updateMovie,
+  deleteMovie,
+} from "../library/moviesServices";
 import { getGenres, addGenre } from "../library/genreServices";
 import { addRegisteredUser, getUser } from "../library/userServices";
 
@@ -52,8 +57,24 @@ const store = createStore({
       const movieIndex = state.movies.findIndex((m) => m._id === movie._id);
       state.movies[movieIndex] = movie;
     },
+    DELETE_MOVIE(state, movie) {
+      const movieIndex = state.movies.findIndex((m) => m._id === movie._id);
+      state.movies.splice(movieIndex, 1);
+    },
   },
   actions: {
+    async deleteMovie({ commit }, movie) {
+      if (movie && movie._id) {
+        try {
+          await deleteMovie(movie);
+          commit("DELETE_MOVIE", movie);
+        } catch (error) {
+          throw error;
+        }
+      } else {
+        throw new Error("movie or _id is undefined");
+      }
+    },
     async addGenre({ commit }, genreName) {
       try {
         const newGenre = await addGenre(genreName);
