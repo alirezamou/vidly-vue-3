@@ -36,9 +36,7 @@ export async function getMovie(id) {
 export async function addMovie(movie) {
   const docRef = doc(moviesCollectionRef);
 
-  Object.defineProperty(movie, "_id", {
-    value: docRef,
-  });
+  movie._id = docRef.id;
 
   try {
     await setDoc(docRef, movie);
