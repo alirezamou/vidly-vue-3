@@ -9,10 +9,10 @@
                 <td>{{ item.numberInStock }}</td>
                 <td>{{ item.dailyRentalRate }}</td>
                 <td>
-                    <button v-if="!loading" class="btn text-secondary" id="delete-movie-button" @click="deleteMovie(item)">
+                    <button v-if="!isLoading(item)" class="btn text-secondary" id="delete-movie-button" @click="delete_movie(item)">
                         <fa-icon icon="fa-solid fa-trash"></fa-icon>
                     </button>
-                    <loading v-if="loading" />
+                    <loading v-if="isLoading(item)" />
                 </td>
             </tr>
         </template>
@@ -30,6 +30,7 @@ export default {
     data() {
         return {
             loading: false,
+            targetMovie: null,
         };
     },
     props: {
@@ -57,6 +58,25 @@ export default {
             const indexEnd = this.per_page * (this.current_page + 1);
 
             return this.items.slice(indexStart, indexEnd);
+        }
+    },
+    methods: {
+        async delete_movie(movie) {
+            try {
+                this.targetMovie = movie;
+                await this.$store.dispatch("deleteMovie", movie);
+                this.targetMovie = null;
+            } catch(error) {
+                // TODO: add toast notification instead of console log
+                console.log(error);
+            }
+        },
+        isLoading(movie) {
+            if(this.targetMovie && this.targetMovie === movie) {
+                return true;
+            } else {
+                return false;
+            }
         }
     }
 }
