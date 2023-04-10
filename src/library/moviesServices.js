@@ -5,6 +5,7 @@ import {
   getDoc,
   doc,
   setDoc,
+  deleteDoc,
 } from "firebase/firestore/lite";
 
 export const moviesCollectionRef = collection(FirebaseStore, "movies");
@@ -55,5 +56,18 @@ export async function updateMovie(movie) {
     } catch (error) {
       throw error;
     }
+  }
+}
+
+export async function deleteMovie(movie) {
+  if (movie._id) {
+    const docRef = doc(FirebaseStore, "/movies/" + movie._id);
+    try {
+      await deleteDoc(docRef);
+    } catch (error) {
+      throw error;
+    }
+  } else {
+    throw new Error("ID Not exists");
   }
 }
