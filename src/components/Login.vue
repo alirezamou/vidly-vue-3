@@ -38,6 +38,9 @@
                 </div>
             </div>
         </Form>
+        <router-link to="/register">
+            <p class="to-register-link fw-light fs-6">Don't have an account? Register</p>
+        </router-link>
     </div>
 </template>
 
@@ -96,3 +99,13 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+.to-regsiter-link {
+    color: rgba(35, 79, 120, 0.8);
+    text-decoration: underline;
+}
+.to-regsiter-link:hover {
+    color: rgba(35, 79, 120, 1);
+}
+</style>

@@ -54,6 +54,9 @@
                 </div>
             </div>
         </Form>
+        <router-link to="/login">
+            <p class="to-register-link fw-light fs-6">Already have an account? Login</p>
+        </router-link>
     </div>
 </template>
 
