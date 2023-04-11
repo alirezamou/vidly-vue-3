@@ -55,11 +55,22 @@ const router = createRouter({
   ],
 });
 
-router.beforeEach((to, _from) => {
-  if (!isAuthenticated() && to.path !== "/login") {
-    return { name: "login" };
-  } else if (isAuthenticated() && to.path === "/login") {
-    return { name: "movies" };
+router.beforeEach(async (to, _from, next) => {
+  if (!isAuthenticated()) {
+    if (to.path === "/login" || to.path === "/register") {
+      next();
+      return;
+    }
+    if (to.path !== "/login") {
+      next({
+        path: "/login",
+      });
+      return;
+    }
+  } else {
+    if (to.path === "/login") {
+      return { name: "movies" };
+    }
   }
 });
 
