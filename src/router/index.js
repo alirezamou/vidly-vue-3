@@ -1,5 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 
+import { isAuthenticated } from "@/library/authServices";
+
 import MoviesIndex from "@/components/MoviesIndex.vue";
 import Login from "@/components/Login.vue";
 import Register from "@/components/Register.vue";
@@ -51,6 +53,14 @@ const router = createRouter({
       component: Logout,
     },
   ],
+});
+
+router.beforeEach((to, _from) => {
+  if (!isAuthenticated() && to.path !== "/login") {
+    return { name: "login" };
+  } else if (isAuthenticated() && to.path === "/login") {
+    return { name: "movies" };
+  }
 });
 
 export default router;
