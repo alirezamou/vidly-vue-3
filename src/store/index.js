@@ -7,13 +7,7 @@ import {
 } from "../library/moviesServices";
 import { getGenres, addGenre } from "../library/genreServices";
 import { addRegisteredUser, getUser } from "../library/userServices";
-
-import { FirebaseAuth } from "../library/firebase";
-import {
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-  signOut,
-} from "firebase/auth";
+import { login, register, signout } from "@/library/authServices";
 
 const store = createStore({
   state: {
@@ -116,62 +110,34 @@ const store = createStore({
       }
     },
     async login({ commit }, { email, password }) {
-      const response = await signInWithEmailAndPassword(
-        FirebaseAuth,
-        email,
-        password
-      );
-
-      if (response) {
-        const user = {
-          uid: response.user.uid,
-          email: response.user.email,
-          username: null,
-        };
-
+      try {
+        const user = await login(email, password);
+        user.username = null;
         commit("SET_USER", user);
 
-        try {
-          const { username } = await getUser(response.user.uid);
-          commit("SET_USERNAME", username);
-        } catch (error) {
-          // TODO: implement a way to handle the username being null instead of console log the error
-          console.log(error);
-        }
-      } else {
-        throw new Error("Unable to login");
+        const { username } = await getUser(user.uid);
+        commit("SET_USERNAME", username);
+      } catch (error) {
+        // TODO: implement a way to handle the username being null instead of console log the error
+        console.log(error);
       }
     },
-
     async register({ commit }, { username, email, password }) {
-      const response = await createUserWithEmailAndPassword(
-        FirebaseAuth,
-        email,
-        password
-      );
-      if (response) {
-        const user = {
-          username,
-          uid: response.user.uid,
-          email: response.user.email,
-        };
-
+      try {
+        const user = await register(email, password);
+        user.username = username;
         commit("SET_USER", user);
 
-        try {
-          await addRegisteredUser(user);
-        } catch (error) {
-          // TODO: implement a way besides the console log the error.
-          console.log(error.message);
-        }
-      } else {
-        throw new Error("Unable to register user");
+        await addRegisteredUser(user);
+      } catch (error) {
+        // TODO: implement a way besides the console log the error.
+        console.log(error);
       }
     },
 
     async logout({ commit }) {
       try {
-        await signOut(FirebaseAuth);
+        await signout();
 
         commit("LOGOUT");
       } catch (error) {
