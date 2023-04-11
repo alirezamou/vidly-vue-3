@@ -22,6 +22,9 @@ export async function login(email, password) {
 
       return user;
     } catch (error) {
+      if (error.message === "Firebase: Error (auth/user-not-found).") {
+        throw new Error("Email or Password is wrong");
+      }
       throw error;
     }
   }

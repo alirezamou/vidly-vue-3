@@ -118,8 +118,7 @@ const store = createStore({
         const { username } = await getUser(user.uid);
         commit("SET_USERNAME", username);
       } catch (error) {
-        // TODO: implement a way to handle the username being null instead of console log the error
-        console.log(error);
+        throw error;
       }
     },
     async register({ commit }, { username, email, password }) {
